@@ -36,7 +36,6 @@ class TableroLogico:
         columna_desde = self.primera_columna - 1
         columna_hasta = self.primera_columna + 2
 
-
         for fila in range(fila_desde, fila_hasta):
             for columna in range(columna_desde, columna_hasta):
                 print(fila, columna)
