@@ -102,9 +102,10 @@ class tableroLogico:
         #se llama por cada mina colocada en colocar_minas_y_numeros
         for vecina in celda_mina.vecinas:
             if not vecina.es_mina:
-                if vecina.valor is None:
-                    vecina.valor = 0
-                vecina.valor += 1
+                vecina.aumentar_valor()
+
+    def es_mina(self, celda):
+        return celda.es_mina
 
     def celdas_a_mostrar(self, celda):
         #procesa todas las celdas que se deben mostrar luego de un click
@@ -114,7 +115,7 @@ class tableroLogico:
             return celdas_reveladas
         if celda.valor is not None:
             #le dice a la celda que se "muestre" si es que tiene numero
-            celda.oculta = False
+            celda.revelar()
             self.celdas_restantes -= 1
             celdas_reveladas.add(celda)
         else:
@@ -128,13 +129,13 @@ class tableroLogico:
         #y almacena las celdas en un set
         #si una celda es vacia, debe mostrar a todas sus vecinas
         #hasta que no hayan celdas vacias limitando unas con otras
-        celda_actual.oculta = False
+        celda_actual.revelar()
         self.celdas_restantes -= 1
         celdas_reveladas.add(celda_actual)
         for vecina in celda_actual.vecinas:
             if vecina.oculta:
                 if vecina.valor is not None:
-                    vecina.oculta = False
+                    vecina.revelar()
                     self.celdas_restantes -= 1
                     celdas_reveladas.add(vecina)
                 else:

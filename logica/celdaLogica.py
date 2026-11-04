@@ -7,6 +7,14 @@ class celdaLogica():
         self.celda_segura = False
         self.vecinas = set()
 
+    def aumentar_valor(self):
+        if self.valor is None:
+            self.valor= 0
+        self.valor += 1
+
+    def revelar(self):
+        self.oculta = False
+
     def es_celda_grande(self):
         return True if len(self.coordenadas) == 4 else False
 

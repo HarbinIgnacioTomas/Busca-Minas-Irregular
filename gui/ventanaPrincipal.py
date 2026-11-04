@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QLabel
 from PyQt5.QtCore import Qt
 
 from gui.tableroGrafico import TableroGrafico
-from logica.juego import Juego
+from logica.juegoViejo import Juego
 
 
 class MainWindow(QMainWindow):
