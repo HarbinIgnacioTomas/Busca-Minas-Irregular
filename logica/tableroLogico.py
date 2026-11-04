@@ -54,7 +54,7 @@ class tableroLogico:
         for fila in range(filas):
             for columna in range(columnas):
                 if (fila, columna) not in celdas:
-                    nueva_celda = celdaLogica([fila, columna])
+                    nueva_celda = celdaLogica([(fila, columna)])
                     celdas[(fila, columna)] = nueva_celda
 
         self.definir_vecinos(celdas)
@@ -89,11 +89,12 @@ class tableroLogico:
             fila = random.randrange(self.filas)
             columna = random.randrange(self.columnas)
 
-            if not self.celdas[(fila, columna)].es_mina and not self.celdas[(fila, columna)].celda_segura:
-                self.celdas[(fila, columna)].es_mina = True
-                self.minas.append(self.celdas[(fila, columna)])
+            celda = self.celdas[(fila, columna)]
+            if not celda.es_mina and not celda.celda_segura:
+                celda.es_mina = True
+                self.minas.append((celda.coordenadas, "M"))
                 #por cada mina colocada, actualiza los numeros a su alrededor
-                self.calcular_numeros(self.celdas[(fila, columna)])
+                self.calcular_numeros(celda)
                 i += 1
 
     def calcular_numeros(self, celda_mina):
@@ -122,7 +123,7 @@ class tableroLogico:
             #si la celda no tiene numero genera una cascada de celdas a mostrar
             self.cascada(celda, celdas_reveladas)
 
-        return celdas_reveladas
+        return self.formatear_celdas_a_mostrar(celdas_reveladas)
 
     def cascada(self, celda_actual, celdas_reveladas):
         #metodo recursivo que actualiza por cada celda el estado de oculto segun corresponda
@@ -154,6 +155,47 @@ class tableroLogico:
                 else:
                     fila_str += f" {celda.valor} "
             print(fila_str)
+
+    def obtener_estructura_bloques(self):
+        # metodo encargado de devolver la estructura del tablero
+        # para comunicarlo a la vista con valores primitivos
+        # y asi evitar acoplamiento con los objetos del modelo
+        bloques = []
+        celdas_procesadas = set()
+        for celda in self.celdas.values():
+            if celda in celdas_procesadas:
+                continue
+            celdas_procesadas.add(celda)
+
+            # celda.coordenadas ya contiene una tupla de tuplas para 2x2
+            # o una tupla simple (f, c) para 1x1
+            if celda.es_celda_grande():
+                bloques.append(celda.coordenadas)
+            else:
+                bloques.append(celda.coordenadas)  # Se guarda como tupla de 1 elemento
+
+
+        return bloques
+
+    def obtener_celda(self, coordenadas):
+        #devuelve el objeto celda correspondiente a las coordenadas ennviadas por el Juego
+        coordenada = tuple(coordenadas[0])
+        return self.celdas.get(coordenada)
+
+    def formatear_celdas_a_mostrar(self, celdas_reveladas):
+        #Recibe el set de objetos celdaLogica devuelto por celdas_a_mostrar,
+        #y genera una estructura de datos pura (lista de tuplas) que contiene
+        #las coordenadas y el valor correspondiente (0 si no hay nada, o el número).
+        datos_para_la_vista = []
+        for celda in celdas_reveladas:
+            # Si el valor es None (espacio vacío sin minas cerca), se asigna 0;
+            # de lo contrario, se mantiene el número de minas circundantes.
+            valor = 0 if celda.valor is None else celda.valor
+
+            # Se agrega la estructura de coordenadas (sea 1x1 o 2x2) junto a su valor
+            datos_para_la_vista.append((celda.coordenadas, valor))
+
+        return datos_para_la_vista
 
 # tablero = tableroLogicoIrregular(18,14,40,5,5,0)
 # tablero.colocar_minas_y_numeros(tablero.celdas)

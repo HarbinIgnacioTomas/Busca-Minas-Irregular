@@ -1,0 +1,26 @@
+# Python / Cache y compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+.venv/
+venv/
+ENV/
+env/
+
+# Configuración de IDEs (PyCharm / VS Code)
+.idea/
+.vscode/
+
+# Archivos de pruebas y borradores antiguos
+gui/pruebaIrregularClaseCompleta.py
+logica/juegoViejo.py
+logica/tableroLogicoViejo.py
+logica/testeLogica.py
+Main.py
+pruebas.py
+buscaminas.txt
+
+# Directorios temporales o paquetes a descartar
+gui/graficaIrregular/
