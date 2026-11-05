@@ -23,3 +23,5 @@ Desarrollado en Python, con un patrón MVC y fuerte orientación a objetos.
 ---
 
 | <img width="400" alt="BuscaMinasEnJuego1" src="https://github.com/user-attachments/assets/742e24e0-f4bd-4572-a023-7f989fb52fe7" /> | <img width="400" alt="BuscaMinasPerdido" src="https://github.com/user-attachments/assets/4c25fe90-402d-425f-bfd6-3dbb6ad92a49" /> |
+
+Si querés probar la aplicación sin necesidad de configurar Python ni el entorno de desarrollo, podés descargar el ejecutable desde el apartado de releases
