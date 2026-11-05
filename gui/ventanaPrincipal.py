@@ -22,11 +22,10 @@ class MainWindow(QMainWindow):
 
     def init_ui(self):
         # Configuraciones básicas de la ventana
-        self.setWindowTitle("Buscaminas Irregular")
+        self.setWindowTitle("BuscaMinas")
         self.resize(400, 300)  # Tamaño inicial de prueba
 
     def procesar_click_en_juego(self, coordenadas):
-        print(f"La ventana recibió las coordenadas para procesar: {coordenadas}")
 
         celdas_a_mostrar, estado = self.juego.evaluar_movimiento(coordenadas)
         self.tablero_grafico.actualizar_celdas_graficas(celdas_a_mostrar)

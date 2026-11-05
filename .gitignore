@@ -18,9 +18,5 @@ gui/pruebaIrregularClaseCompleta.py
 logica/juegoViejo.py
 logica/tableroLogicoViejo.py
 logica/testeLogica.py
-Main.py
 pruebas.py
 buscaminas.txt
-
-# Directorios temporales o paquetes a descartar
-gui/graficaIrregular/
