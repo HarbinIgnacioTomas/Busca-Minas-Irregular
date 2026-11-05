@@ -8,51 +8,59 @@ class CeldaGrafica(QPushButton):
 
     def __init__(self, coordenadas, parent=None):
         super().__init__(parent)
-        # Recibe la lista de coordenadas que le corresponde a este componente visual
-        # (1 tupla para 1x1, o 4 tuplas para el bloque 2x2)
+        #recibe la lista de coordenadas que le corresponde a este componente visual
+        #(1 tupla para 1x1, o 4 tuplas para el bloque 2x2)
         self.coordenadas = coordenadas
 
-        # Configuraciones visuales iniciales
+
         self.setMinimumSize(40, 40)
-        self.setCheckable(True)  # Útil si querés que quede presionada visualmente
+        self.setCheckable(True)
+        self.setFlat(True)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 
-        # --- CAMBIOS ESTÉTICOS ---
-        self.setFlat(True)  # Elimina el relieve 3D nativo del sistema operativo
-        self.setSizePolicy(
-            QSizePolicy.Preferred, QSizePolicy.Preferred
-        )  # Asegura una correcta distribución en la grilla
-
-        # Estilo visual unificado (fondo gris claro, bordes finos y rectos)
         self.setStyleSheet("""
-              QPushButton {
-                  background-color: #E0E0E0;   /* Gris claro base */
-                  border: 1px solid #C0C0C0;   /* Borde fino para armar la cuadrícula */
-                  border-radius: 0px;          /* Cero radio para evitar esquinas redondeadas */
-              }
-              QPushButton:hover {
-                  background-color: #D6D6D6;   /* Gris un poco más oscuro al pasar el mouse */
-              }
-              QPushButton:checked {
-                  background-color: #CCCCCC;   /* Color cuando queda presionada/revelada */
-              }
-          """)
+                      QPushButton {
+                          background-color: #E0E0E0;   /* Gris claro base */
+                          border: 1px solid #C0C0C0;   /* Borde fino para armar la cuadrícula */
+                          border-radius: 6px;          /* Esquinas redondeadas */
+                      }
+                      QPushButton:hover {
+                          background-color: #D6D6D6;   /* Gris un poco más oscuro al pasar el mouse */
+                      }
+                      QPushButton:disabled {
+                          background-color: #d4d4d4;   /* Fondo cuando está desactivada/revelada */
+                          color: #000000;
+                      }
+                  """)
 
     def mousePressEvent(self, event):
-        # Evaluamos qué botón del mouse presionó el usuario
+        #evalua qué botón se presionó sobre la celda
+
         if event.button() == Qt.LeftButton:
-            if self.text() == "B":
+            if self.text() == "🚩":
                 return
             self.coordenadas_clicadas.emit(self.coordenadas)
             self.setEnabled(False)
 
-
         elif event.button() == Qt.RightButton:
-            if self.text() == "B":
+            if self.text() == "🚩":
                 self.setText("")
+                self.setStyleSheet("""
+                                    QPushButton {
+                                        background-color: #E0E0E0;
+                                        border: 1px solid #C0C0C0;
+                                        border-radius: 6px;
+                                    }
+                                    QPushButton:hover {
+                                        background-color: #D6D6D6;
+                                    }
+                                """)
             else:
-                self.setText("B")
+                self.setText("🚩")
+                self.setStyleSheet(
+                    "font-weight: bold; font-size: 18px; background-color: #fff9c4; color: #000000; border: 1px solid #fbc02d; border-radius: 6px;"
+                )
 
-        # Llamamos al evento original para que el botón no pierda su comportamiento visual base
         super().mousePressEvent(event)
 
     def es_grande(self):
@@ -63,8 +71,32 @@ class CeldaGrafica(QPushButton):
         self.setEnabled(False)
         if valor == 0:
             texto = ""
+            self.setStyleSheet(
+                "font-weight: bold; font-size: 18px; background-color: #cccccc; border: 1px solid #bbb; border-radius: 6px;"
+            )
         elif valor == "M":
-            texto = "x"
+            texto = "💣"
+            self.setStyleSheet(
+                "font-weight: bold; font-size: 18px; background-color: #f44336; color: #fff; border: 1px solid #999; border-radius: 6px;"
+            )
         else:
             texto = str(valor)
+            colores = {
+                1: "#2196F3",
+                2: "#4CAF50",
+                3: "#F44336",
+                4: "#9C27B0",
+                5: "#795548",
+                6: "#00BCD4",
+                7: "#212121",
+                8: "#616161",
+                9: "#FF9800",
+                10: "#E91E63",
+                11: "#8BC34A",
+                12: "#673AB7"
+            }
+            color = colores.get(valor, "#000")
+            self.setStyleSheet(
+                f"font-weight: bold; font-size: 18px; background-color: #d4d4d4; color: {color}; border: 1px solid #bbb; border-radius: 6px;"
+            )
         self.setText(texto)

@@ -27,7 +27,6 @@ class Juego:
             #las minas se colocan luego de asegurar que la primera mina sea vacia
             self.tablero.colocar_minas_y_numeros(celda)
             self.primera_celda = False
-        celdas_a_mostrar = set()
         if self.tablero.es_mina(celda):
             estado = EstadoJuego.PERDIDO
             celdas_a_mostrar = self.tablero.minas

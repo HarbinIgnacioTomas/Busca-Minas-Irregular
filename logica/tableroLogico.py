@@ -166,19 +166,12 @@ class tableroLogico:
             if celda in celdas_procesadas:
                 continue
             celdas_procesadas.add(celda)
-
-            # celda.coordenadas ya contiene una tupla de tuplas para 2x2
-            # o una tupla simple (f, c) para 1x1
-            if celda.es_celda_grande():
-                bloques.append(celda.coordenadas)
-            else:
-                bloques.append(celda.coordenadas)  # Se guarda como tupla de 1 elemento
-
+            bloques.append(celda.coordenadas)
 
         return bloques
 
     def obtener_celda(self, coordenadas):
-        #devuelve el objeto celda correspondiente a las coordenadas ennviadas por el Juego
+        #devuelve el objeto celda correspondiente a las coordenadas enviadas por el Juego
         coordenada = tuple(coordenadas[0])
         return self.celdas.get(coordenada)
 
@@ -188,15 +181,7 @@ class tableroLogico:
         #las coordenadas y el valor correspondiente (0 si no hay nada, o el número).
         datos_para_la_vista = []
         for celda in celdas_reveladas:
-            # Si el valor es None (espacio vacío sin minas cerca), se asigna 0;
-            # de lo contrario, se mantiene el número de minas circundantes.
             valor = 0 if celda.valor is None else celda.valor
-
-            # Se agrega la estructura de coordenadas (sea 1x1 o 2x2) junto a su valor
             datos_para_la_vista.append((celda.coordenadas, valor))
 
         return datos_para_la_vista
-
-# tablero = tableroLogicoIrregular(18,14,40,5,5,0)
-# tablero.colocar_minas_y_numeros(tablero.celdas)
-# tablero.imprimir_tablero(tablero.celdas)

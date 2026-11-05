@@ -21,8 +21,8 @@ class TableroGrafico(QWidget):
         # QGridLayout posiciona las celdas en la grilla
         self.layout_grilla = QGridLayout()
 
-        self.layout_grilla.setContentsMargins(0, 0, 0, 0)  # margen de la grilla a la ventana
-        self.layout_grilla.setSpacing(0)  # espacio entre celdas
+        self.layout_grilla.setContentsMargins(4,4,4,4)  # margen de la grilla a la ventana
+        self.layout_grilla.setSpacing(4)  # espacio entre celdas
 
         self.setLayout(self.layout_grilla)
         self.crear_componentes_visuales()
@@ -55,22 +55,16 @@ class TableroGrafico(QWidget):
         self.coordenadas_celda.emit(coordenadas)
 
     def actualizar_celdas_graficas(self, celdas_a_mostrar):
-        """Recibe la lista de tuplas con formato:
-
-        [([(fila, columna)], valor), ...] o bloques 2x2
-        """
+        #interpreta el diccionario de coordenadas:valor y comunica a cada celda correspondiente
         for coordenadas, valor in celdas_a_mostrar:
-            # Como 'coordenadas_bloque' ya es iterable (una lista de tuplas de coordenadas),
-            # recorremos directamente cada coordenada sin bucles anidados extra.
-            for coordenada in coordenadas:
-                # Buscamos el widget gráfico usando la coordenada como clave exacta
-                celda_grafica = self.celdas_graficas.get(tuple(coordenada))
 
-                if celda_grafica:
-                    # Le mandamos el valor al widget para que lo dibuje en pantalla
-                    celda_grafica.mostrar_valor(valor)
+            for coordenada in coordenadas:
+                #por cada coordenada busca su celda grafica asociada
+                #y le cambia su estado segun el valor que le corresponda
+                celda_grafica = self.celdas_graficas.get(tuple(coordenada))
+                celda_grafica.mostrar_valor(valor)
 
     def bloquear_tablero(self):
-        #bloque todas las celdas restantes en caso de ganar o perder
+        #bloquea todas las celdas restantes en caso de ganar o perder
         for celda_grafica in set(self.celdas_graficas.values()):
             celda_grafica.setEnabled(False)
